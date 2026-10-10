@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediBed | Hospital Bed Availability</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="MediBed home">
+        <span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="12" fill="currentColor"/><path d="M20 10v20M10 20h20" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></span>
+        <span><strong>MediBed</strong><small>CARE OPERATIONS</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="navigation">
+        <a class="nav-link active" href="#dashboard"><span class="nav-icon">▦</span> Overview</a>
+        <a class="nav-link" href="#beds"><span class="nav-icon">▤</span> Bed inventory <span class="nav-count" id="navBedCount">0</span></a>
+        <a class="nav-link" href="#hospitals"><span class="nav-icon">⌂</span> Hospitals</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <span class="help-icon">✦</span>
+          <strong>Need a hand?</strong>
+          <p>Keep bed information up to date so teams can make faster decisions.</p>
+          <a href="#beds">Manage beds <span>→</span></a>
+        </div>
+        <div class="profile">
+          <div class="avatar">AD</div>
+          <div class="profile-text"><strong>Admin User</strong><small>System administrator</small></div>
+          <button class="dots" aria-label="Profile options">•••</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div>
+        <div class="top-actions">
+          <span class="demo-pill"><span></span> DEMO DATA</span>
+          <button class="icon-button" id="refreshBtn" title="Refresh sample data" aria-label="Refresh">↻</button>
+          <div class="top-avatar">AD</div>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">FRIDAY, OCTOBER 9 · OPERATIONS CENTER</p>
+          <h1>Hospital bed overview</h1>
+          <p class="subheading">A clear view of bed capacity and availability across your hospitals.</p>
+        </div>
+        <button class="primary-button" id="addBedTop"><span>＋</span> Add a bed</button>
+      </section>
+
+      <section class="stats-grid" aria-label="Bed statistics">
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Total beds</span><span class="stat-icon purple">▤</span></div>
+          <div class="stat-value" id="totalBeds">0</div>
+          <div class="stat-foot"><span class="foot-dot purple-dot"></span> Across all listed hospitals</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Available beds</span><span class="stat-icon green">＋</span></div>
+          <div class="stat-value" id="availableBeds">0</div>
+          <div class="stat-foot"><span class="foot-dot green-dot"></span><strong id="availablePercent">0%</strong> of total capacity</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Occupied beds</span><span class="stat-icon orange">♙</span></div>
+          <div class="stat-value" id="occupiedBeds">0</div>
+          <div class="stat-foot"><span class="foot-dot orange-dot"></span><strong id="occupiedPercent">0%</strong> occupancy rate</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Under maintenance</span><span class="stat-icon blue">⚒</span></div>
+          <div class="stat-value" id="maintenanceBeds">0</div>
+          <div class="stat-foot"><span class="foot-dot blue-dot"></span> Temporarily unavailable</div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel capacity-panel">
+          <div class="panel-heading">
+            <div><h2>Bed capacity</h2><p>Availability at a glance</p></div>
+            <span class="live-tag"><span></span> Live from this demo</span>
+          </div>
+          <div class="capacity-body">
+            <div class="donut-wrap">
+              <div class="donut" id="donutChart"><div class="donut-center"><strong id="donutTotal">0</strong><span>Total beds</span></div></div>
+            </div>
+            <div class="legend">
+              <div class="legend-row"><span class="legend-key available-key"></span><span>Available</span><strong id="legendAvailable">0</strong></div>
+              <div class="legend-row"><span class="legend-key occupied-key"></span><span>Occupied</span><strong id="legendOccupied">0</strong></div>
+              <div class="legend-row"><span class="legend-key maintenance-key"></span><span>Maintenance</span><strong id="legendMaintenance">0</strong></div>
+              <div class="legend-note">Status totals update automatically when you edit a bed.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel hospitals-panel" id="hospitals">
+          <div class="panel-heading">
+            <div><h2>Hospitals</h2><p>Capacity by facility</p></div>
+            <button class="text-button" id="viewAllHospitals">View all <span>→</span></button>
+          </div>
+          <div class="hospital-list" id="hospitalSummary"></div>
+        </article>
+      </section>
+
+      <section class="panel inventory-panel" id="beds">
+        <div class="inventory-heading">
+          <div><h2>Bed inventory</h2><p>Search, filter, and update bed records.</p></div>
+          <button class="primary-button compact" id="addBedButton"><span>＋</span> Add a bed</button>
+        </div>
+        <div class="toolbar">
+          <label class="search-box"><span>⌕</span><input type="search" id="searchInput" placeholder="Search bed, hospital or department..." /></label>
+          <select id="hospitalFilter" aria-label="Filter by hospital"><option value="">All hospitals</option></select>
+          <select id="departmentFilter" aria-label="Filter by department"><option value="">All departments</option></select>
+          <select id="statusFilter" aria-label="Filter by status"><option value="">All statuses</option><option>Available</option><option>Occupied</option><option>Maintenance</option></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>BED DETAILS</th><th>HOSPITAL</th><th>DEPARTMENT</th><th>STATUS</th><th>LAST UPDATED</th><th></th></tr></thead>
+            <tbody id="bedTableBody"></tbody>
+          </table>
+          <div class="empty-state hidden" id="emptyState"><div>⌕</div><strong>No beds found</strong><p>Try another search or add a new bed record.</p></div>
+        </div>
+        <div class="table-footer"><span id="resultCount">Showing 0 beds</span><span class="local-note"><span>●</span> Changes are saved in this browser</span></div>
+      </section>
+
+      <footer class="footer"><span>© 2026 MediBed · Hospital Bed Availability System</span><span>Built for a hackathon demo <b>♥</b></span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="bedModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <form class="modal" id="bedForm">
+      <div class="modal-head"><div><span class="modal-kicker">BED INVENTORY</span><h2 id="modalTitle">Add a bed</h2><p>Enter the bed details below.</p></div><button type="button" class="close-button" id="closeModal" aria-label="Close">×</button></div>
+      <input type="hidden" id="editBedId" />
+      <div class="form-grid">
+        <label>Bed number <input id="bedNumber" required placeholder="e.g. ICU-105" maxlength="20" /></label>
+        <label>Hospital <input id="hospitalName" required placeholder="e.g. City Care Hospital" list="hospitalOptions" /></label>
+        <datalist id="hospitalOptions"><option value="City Care Hospital"></option><option value="Green Valley Medical Center"></option><option value="Sunrise Multispecialty"></option></datalist>
+        <label>Department <select id="bedDepartment" required><option value="">Choose department</option><option>Emergency</option><option>ICU</option><option>General Ward</option><option>Maternity</option><option>Pediatrics</option><option>Cardiology</option><option>Orthopedics</option></select></label>
+        <label>Status <select id="bedStatus" required><option>Available</option><option>Occupied</option><option>Maintenance</option></select></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="secondary-button" id="cancelModal">Cancel</button><button type="submit" class="primary-button">Save bed</button></div>
+    </form>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
